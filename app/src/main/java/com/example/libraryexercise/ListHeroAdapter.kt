@@ -9,28 +9,30 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.libraryexercise.databinding.ItemRowHeroBinding
 
-class ListHeroAdapter(private val listHero: ArrayList<Hero>): RecyclerView.Adapter<ListHeroAdapter.MyViewHolder>() {
-    class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        val tvItemName: TextView = itemView.findViewById(R.id.tvItemName)
-        val tvItemDescription: TextView = itemView.findViewById(R.id.tvItemDescription)
-        val imgPhoto: ImageView = itemView.findViewById(R.id.imgHeroes)
+class ListHeroAdapter(private val listHero: ArrayList<Hero>) :
+    RecyclerView.Adapter<ListHeroAdapter.MyViewHolder>() {
+    class MyViewHolder(var binding: ItemRowHeroBinding) : RecyclerView.ViewHolder(binding.root) {
+//        val tvItemName: TextView = itemView.findViewById(R.id.tvItemName)
+//        val tvItemDescription: TextView = itemView.findViewById(R.id.tvItemDescription)
+//        val imgPhoto: ImageView = itemView.findViewById(R.id.imgHeroes)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val view: View =LayoutInflater.from(parent.context).inflate(R.layout.item_row_hero, parent, false)
-        return MyViewHolder(view)
+        val binding = ItemRowHeroBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return MyViewHolder(binding)
     }
 
     override fun getItemCount(): Int = listHero.size
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val (name, description, image) = listHero[position]
-        holder.tvItemName.text = name
-        holder.tvItemDescription.text = description
+        holder.binding.tvItemName.text = name
+        holder.binding.tvItemDescription.text = description
         Glide.with(holder.itemView.context)
             .load(image)
-            .into(holder.imgPhoto)
+            .into(holder.binding.imgHeroes)
 
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, HeroDetailActivity::class.java)

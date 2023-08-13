@@ -9,6 +9,8 @@ import android.provider.ContactsContract.CommonDataKinds.Website.URL
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import com.example.libraryexercise.databinding.ActivityHeroDetailBinding
+import com.example.libraryexercise.databinding.ItemRowHeroBinding
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -17,15 +19,15 @@ import java.io.InputStream
 import java.net.URL
 
 class HeroDetailActivity : AppCompatActivity() {
-
-    private lateinit var imgViewHero: ImageView
-    companion object{
+    companion object {
         const val KEY_EXTRA = "key_extra"
     }
+
+    private lateinit var binding: ActivityHeroDetailBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_hero_detail)
-
+        binding = ActivityHeroDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
 
         val dataHero = if (Build.VERSION.SDK_INT >= 33) {
@@ -35,15 +37,18 @@ class HeroDetailActivity : AppCompatActivity() {
         }
 //        findViewById<ImageView>(R.id.imgHero).setImageBitmap(dataHero!!.image)
 
-        imgViewHero = findViewById(R.id.imgHero)
         val imgHero = intent.getStringExtra(dataHero!!.image)
-        if (imgHero != null){
+        if (imgHero != null) {
             GlobalScope.launch(Dispatchers.Main) {
                 try {
                     val bitmap = loadImageFromUrl(imgHero)
-                    imgViewHero.setImageBitmap(bitmap)
-                }catch (e: Exception){
-                    Toast.makeText(this@HeroDetailActivity, "Failed to Load Data", Toast.LENGTH_SHORT).show()
+                    binding.imgHero.setImageBitmap(bitmap)
+                } catch (e: Exception) {
+                    Toast.makeText(
+                        this@HeroDetailActivity,
+                        "Failed to Load Data",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }

@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         val dataPhoto = resources.getStringArray(R.array.data_photo)
 
         val listHero = ArrayList<Hero>()
-        for (i in dataName.indices){
+        for (i in dataName.indices) {
             val hero = Hero(dataName[i], dataDescription[i], dataPhoto[i])
             listHero.add(hero)
         }
